@@ -53,7 +53,7 @@
 
 {#if !logged}
   <div class="login">
-    <button on:click={login}>Login</button>
+    <button class="button" on:click={login}>Login</button>
   </div>
 {:else}
   <Floor />
@@ -66,25 +66,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-    button {
-      all: unset;
-      font-size: 2rem;
-      padding: 1rem 2rem;
-      background-color: #1ccc5b;
-      border-radius: 3px;
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-
-      &:hover {
-        box-shadow: 5px 5px black;
-        transform: translate(-5px, -5px);
-      }
-
-      &:active {
-        box-shadow: 0 0 black;
-        transform: translate(0, 0);
-      }
-    }
   }
 </style>

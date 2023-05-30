@@ -16,8 +16,10 @@
 
   async function checkScroll() {
     if (!checking) {
-      // @ts-ignore
-      if (window.scrollY >= window.scrollMaxY - 200) {
+      const root = document.documentElement;
+      if (
+        Math.abs(root.scrollHeight - root.scrollTop - root.clientHeight) < 1
+      ) {
         checking = true;
         const res = await fetch(nextCall, {
           headers,
@@ -69,7 +71,8 @@
   <div class="wrapper">
     <div class="tracks">
       {#each items as item}
-        <a
+        <div
+          class="track"
           on:mouseover={() => {
             playAudio(item.track.preview_url);
           }}
@@ -86,25 +89,26 @@
               audios[item.track.preview_url].pause();
             }
           }}
-          href={item.track.external_urls.spotify}
-          target="_blank"
         >
-          <div class="track">
-            <div class="info">
-              <p class="title">
-                {item.track.name}
-              </p>
-              <p class="artists">
-                {item.track.artists.map((a) => a.name).join(", ")}
-              </p>
-            </div>
-            <img
-              src={item.track.album.images[0].url}
-              width="150px"
-              alt={item.track.name}
-            />
+          <div class="info">
+            <p class="title">
+              {item.track.name}
+            </p>
+            <a
+              href={item.track.external_urls.spotify}
+              class="button"
+              target="_blank">Open</a
+            >
+            <p class="artists">
+              {item.track.artists.map((a) => a.name).join(", ")}
+            </p>
           </div>
-        </a>
+          <img
+            src={item.track.album.images[0].url}
+            width="150px"
+            alt={item.track.name}
+          />
+        </div>
       {/each}
     </div>
   </div>
@@ -147,7 +151,15 @@
       padding: 10px;
       background-color: rgba(0, 0, 0, 0.7);
       transition: opacity 0.2s ease-in-out;
-      pointer-events: none;
+
+      .button {
+        font-size: unset;
+        padding: 2px 4px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
 
       .artists {
         position: absolute;
